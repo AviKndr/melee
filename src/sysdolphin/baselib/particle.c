@@ -1528,9 +1528,10 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                     hsd_803983A4(srt->gp);
                     srt = pp->appsrt;
                     {
+                        Vec3* trans = &srt->translate;
                         Quaternion* rot = &srt->rot;
-                        HSD_MtxSRT(srt->mmtx, &srt->scale, (Vec3*) rot,
-                                   &srt->translate, NULL);
+                        Vec3* scale = &srt->scale;
+                        HSD_MtxSRT(srt->mmtx, scale, (Vec3*) rot, trans, NULL);
                     }
                     pp->pos.x = pp->appsrt->mmtx[0][0] * pp->pos.x +
                                 pp->appsrt->mmtx[0][1] * pp->pos.y +
@@ -3013,10 +3014,10 @@ do_life:
 
     /* JObj attachment - update JObj position to match particle */
     if (pp->kind & 0x8000) {
-        s32 jobj_idx = (pp->kind >> 12) & 7;
+        s32 jobj_idx;
 
         /* Allocate JObj if slot is empty */
-        if (hsd_804D08E8[jobj_idx] == NULL) {
+        if (hsd_804D08E8[(jobj_idx = (pp->kind >> 12) & 7)] == NULL) {
             HSD_JObj* new_jobj = HSD_JObjAlloc();
             if (new_jobj != NULL) {
                 hsd_8039CF4C(jobj_idx + 1, new_jobj);
