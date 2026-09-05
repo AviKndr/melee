@@ -2577,9 +2577,9 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                         a_rand = HSD_Randf();
                         delta = (s8) *pc++;
                         delta_float =
-                            (f32) (s32) ((f32) (timing + 1) * a_rand);
+                            (f32) (s32) ((f32) (timing + 1) * a_rand) /
+                            (f32) timing;
                         delta_float *= (f32) (delta * 2);
-                        delta_float /= (f32) timing;
                         if (flags & 0x10) {
                             val = (f32) pp->primColTarget.a + delta_float;
                             if (val < 0.0F) {
