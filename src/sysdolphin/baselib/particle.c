@@ -637,12 +637,12 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
     HSD_Generator* gchild;
     HSD_PSCmdList* cl;
     HSD_PSTexGroup* tg;
-    UNUSED u8 pad_top[80];
+    UNUSED u8 pad_top[76];
     volatile f32 sqrt_res;
     UNUSED u8 pad_mid[144];
     volatile f32 vel_res;
     volatile f32 dist_res;
-    UNUSED u8 pad_bot[232];
+    UNUSED u8 pad_bot[236];
 
 #define fval (*(f32*) &hsd_804D78D0)
 #define fbytes (*(ParticleFloatBytes*) &hsd_804D78D0).bytes
@@ -1527,8 +1527,11 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                     }
                     hsd_803983A4(srt->gp);
                     srt = pp->appsrt;
-                    HSD_MtxSRT(srt->mmtx, &srt->scale, (Vec3*) &srt->rot,
-                               &srt->translate, NULL);
+                    {
+                        Quaternion* rot = &srt->rot;
+                        HSD_MtxSRT(srt->mmtx, &srt->scale, (Vec3*) rot,
+                                   &srt->translate, NULL);
+                    }
                     pp->pos.x = pp->appsrt->mmtx[0][0] * pp->pos.x +
                                 pp->appsrt->mmtx[0][1] * pp->pos.y +
                                 pp->appsrt->mmtx[0][2] * pp->pos.z +
@@ -1684,22 +1687,20 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
             case 0xB8:
                 /* Force toward JObj with kill on proximity */
                 {
-                    u8* p = pc;
-                    int idx = *p++;
+                    int idx = *pc++;
                     f32 force, range;
 
                     idx += pp->pJObjOfs;
-                    fbytes[0] = *p++;
-                    fbytes[1] = *p++;
-                    fbytes[2] = *p++;
-                    fbytes[3] = *p++;
+                    fbytes[0] = *pc++;
+                    fbytes[1] = *pc++;
+                    fbytes[2] = *pc++;
+                    fbytes[3] = *pc++;
                     force = fval;
-                    fbytes[0] = *p++;
-                    fbytes[1] = *p++;
-                    fbytes[2] = *p++;
-                    fbytes[3] = *p++;
+                    fbytes[0] = *pc++;
+                    fbytes[1] = *pc++;
+                    fbytes[2] = *pc++;
+                    fbytes[3] = *pc++;
                     range = fval;
-                    pc = p;
                     {
                         HSD_JObj* jobj = hsd_804D08E8[idx];
                         if (hsd_803991D8((HSD_Generator*) pp, jobj, force,
