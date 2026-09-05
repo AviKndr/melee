@@ -637,7 +637,7 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
     HSD_Generator* gchild;
     HSD_PSCmdList* cl;
     HSD_PSTexGroup* tg;
-    UNUSED u8 pad_top[84];
+    UNUSED u8 pad_top[80];
     volatile f32 sqrt_res;
     UNUSED u8 pad_mid[144];
     volatile f32 vel_res;
