@@ -80,6 +80,8 @@ extern char mnNameNew_CurrentNameText[0x10];
 extern u8 mnNameNew_804D4F7C[8];
 HSD_GObj* mnNameNew_804D6C08;
 
+static const Vec3 mnNameNew_803B8528 = { -0.5f, 0.7f, 0.0f };
+
 static AnimLoopSettings mnNameNew_803EDA58[3] = {
     { 0.0f, 19.0f, -0.1f },
     { 20.0f, 39.0f, -0.1f },
@@ -1504,8 +1506,6 @@ s32 mnNameNew_8023D130(GlyphVariantEntry* arg0, u16 arg1, u8 arg2, s32 arg3)
     arg0->text = text;
     return (s32) text;
 }
-
-static const Vec3 mnNameNew_803B8528 = { -0.5f, 0.7f, 0.0f };
 
 static inline void
 mnNameNew_GlyphVariantSetup_InitJobjs(GlyphVariantEntry* user_data,
