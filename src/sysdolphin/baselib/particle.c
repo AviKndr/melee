@@ -2756,17 +2756,13 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                                                   (s32) pp->matATarget)) >>
                                          16);
                     }
-                    {
-                        u8* p = pc;
-                        pp->matColCount = *p++;
-                        cnt = pp->matColCount;
-                        if (cnt & 0x80) {
-                            cnt = ((cnt & 0x7F) << 8) + *p++;
-                            pp->matColCount = cnt;
-                        }
-                        flags = *p++;
-                        pc = p;
+                    pp->matColCount = *pc++;
+                    cnt = pp->matColCount;
+                    if (cnt & 0x80) {
+                        cnt = ((cnt & 0x7F) << 8) + *pc++;
+                        pp->matColCount = cnt;
                     }
+                    flags = *pc++;
                     pp->matRGBTarget = pp->matRGB;
                     if (flags & 1) {
                         pp->matRGBTarget = *pc++;
@@ -2802,17 +2798,13 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                                                   (s32) pp->ambATarget)) >>
                                          16);
                     }
-                    {
-                        u8* p = pc;
-                        pp->ambColCount = *p++;
-                        cnt = pp->ambColCount;
-                        if (cnt & 0x80) {
-                            cnt = ((cnt & 0x7F) << 8) + *p++;
-                            pp->ambColCount = cnt;
-                        }
-                        flags = *p++;
-                        pc = p;
+                    pp->ambColCount = *pc++;
+                    cnt = pp->ambColCount;
+                    if (cnt & 0x80) {
+                        cnt = ((cnt & 0x7F) << 8) + *pc++;
+                        pp->ambColCount = cnt;
                     }
+                    flags = *pc++;
                     pp->ambRGBTarget = pp->ambRGB;
                     if (flags & 1) {
                         pp->ambRGBTarget = *pc++;
