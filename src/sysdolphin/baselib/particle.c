@@ -642,7 +642,7 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
     UNUSED u8 pad_mid[144];
     volatile f32 vel_res;
     volatile f32 dist_res;
-    UNUSED u8 pad_bot[248];
+    UNUSED u8 pad_bot[232];
 
 #define fval (*(f32*) &hsd_804D78D0)
 #define fbytes (*(ParticleFloatBytes*) &hsd_804D78D0).bytes
@@ -1045,8 +1045,8 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                     idx += pc[1];
                     pc += 2;
 
-                    if (hsd_804D0948[pp->bank] != NULL) {
-                        idx = hsd_804D0948[pp->bank][idx];
+                    if (hsd_804D0948[bank] != NULL) {
+                        idx = hsd_804D0948[bank][idx];
                     }
 
                     linkNo = pp->linkNo;
@@ -1382,8 +1382,8 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
 
                     bank = pp->bank;
                     (void) bank;
-                    if (hsd_804D0948[pp->bank] != NULL) {
-                        idx = hsd_804D0948[pp->bank][idx];
+                    if (hsd_804D0948[bank] != NULL) {
+                        idx = hsd_804D0948[bank][idx];
                     }
 
                     linkNo = pp->linkNo;
@@ -1463,17 +1463,23 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                             cnt = ((cnt & 0x7F) << 8) + *p++;
                             pp->sizeCount = cnt;
                         }
-                        fbytes[0] = *p++;
-                        fbytes[1] = *p++;
-                        fbytes[2] = *p++;
-                        fbytes[3] = *p++;
-                        pp->sizeTarget = fval;
-                        fbytes[0] = *p++;
-                        fbytes[1] = *p++;
-                        fbytes[2] = *p++;
-                        fbytes[3] = *p++;
-                        range = fval;
                         pc = p;
+                    }
+                    {
+                        u8* p = pc + 1;
+                        u8* next = p + 4;
+                        fbytes[0] = pc[0];
+                        next += 3;
+                        fbytes[1] = pc[1];
+                        fbytes[2] = pc[2];
+                        fbytes[3] = pc[3];
+                        pp->sizeTarget = fval;
+                        fbytes[0] = p[3];
+                        fbytes[1] = p[4];
+                        fbytes[2] = p[5];
+                        fbytes[3] = p[6];
+                        range = fval;
+                        pc = next;
                     }
                     pp->sizeTarget += range * HSD_Randf();
                     if (pp->sizeCount == 0) {
@@ -1780,8 +1786,8 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                     idx += pc[1];
                     pc += 2;
 
-                    if (hsd_804D0948[pp->bank] != NULL) {
-                        idx = hsd_804D0948[pp->bank][idx];
+                    if (hsd_804D0948[bank] != NULL) {
+                        idx = hsd_804D0948[bank][idx];
                     }
 
                     linkNo = pp->linkNo;
@@ -2832,27 +2838,21 @@ void* hsd_8039930C(void* pp_arg, void* prev_arg)
                     f32 result;
 
                     {
-                        u8* p = pc;
-                        {
-                            u8* q = p;
-                            fbytes[0] = *q++;
-                            fbytes[1] = *q++;
-                            fbytes[2] = *q++;
-                            fbytes[3] = *q++;
-                            p = q;
-                        }
+                        u8* p = pc + 1;
+                        u8* pc2;
+                        fbytes[0] = pc[0];
+                        pc2 = p + 4;
+                        fbytes[1] = pc[1];
+                        fbytes[2] = pc[2];
+                        fbytes[3] = pc[3];
                         base_val = fval;
-                        {
-                            u8* q = p;
-                            fbytes[0] = *q++;
-                            fbytes[1] = *q++;
-                            fbytes[2] = *q++;
-                            fbytes[3] = *q++;
-                            p = q;
-                        }
+                        fbytes[0] = pc[4];
+                        fbytes[1] = pc[5];
+                        fbytes[2] = pc[6];
+                        fbytes[3] = pc[7];
                         range_val = fval;
-                        timing = *p++;
-                        pc = p;
+                        pc = pc2 + 4;
+                        timing = p[7];
                     }
 
                     if (timing != 0) {
